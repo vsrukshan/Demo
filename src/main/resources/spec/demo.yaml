@@ -1,0 +1,365 @@
+openapi: 3.0.3
+info:
+  title: Demo
+  description: Simple personal financial app
+  version: 1.0.0
+
+
+paths:
+  /expenses:
+    get:
+      summary: Gets All Expenses
+      operationId: getAllExpenses
+      tags:
+        - Expense API
+      responses:
+        '200':
+          description: Return all expenses of the user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Expense"
+        '400':
+          description: Request is not correct.
+        '404':
+          description: There is no endpoint found.
+        '500':
+          description: Internal Server error.
+
+
+    post:
+      summary: Add Expense
+      operationId: addExpense
+      tags:
+        - Expense API
+      requestBody:
+        description: Feilds to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expense'
+        required: true
+      responses:
+        '200':
+          description: Return success message after added the expense
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expense'
+        '400':
+          description: Request is not correct.
+        '404':
+          description: There is no endpoint found.
+        '500':
+          description: Internal Server error.
+
+  /expenses/{expenseId}:
+    get:
+      summary: Gets All Expenses
+      operationId: getExpenseById
+      tags:
+        - Expense API
+      parameters:
+        - name: expenseId
+          in: path
+          required: true
+          description: Expense id to retrieve
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Return all expenses of the user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expense"
+        '400':
+          description: Request is not correct.
+        '404':
+          description: There is no endpoint found.
+        '500':
+          description: Internal Server error.
+
+    put:
+      summary: Update expense
+      operationId: updateExpense
+      tags:
+        - Expense API
+      parameters:
+        - name: expenseId
+          in: path
+          required: true
+          description: Expense id to update
+          schema:
+            type: integer
+      requestBody:
+        description: Feilds to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expense'
+        required: true
+      responses:
+        '204':
+          description: updated
+          content: { }
+        '404':
+          description: There is no endpoint found
+        '500':
+          description: Internal Server error.
+
+    delete:
+      summary: delete expense
+      operationId: deleteExpense
+      tags:
+        - Expense API
+      parameters:
+        - name: expenseId
+          in: path
+          required: true
+          description: Expense id to delete
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deleted
+          content: { }
+        '404':
+          description: There is no endpoint found
+        '500':
+          description: Internal server error
+
+  /incomes:
+    get:
+      summary: Gets All Incomes
+      operationId: getAllIncomes
+      tags:
+        - Income API
+      responses:
+        '200':
+          description: Return all Income record of the user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Income"
+        '400':
+          description: Request is not correct.
+        '404':
+          description: There is no endpoint found.
+        '500':
+          description: Internal Server error.
+
+
+    post:
+      summary: Add Income
+      operationId: addIncome
+      tags:
+        - Income API
+      requestBody:
+        description: Feilds to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Income'
+        required: true
+      responses:
+        '200':
+          description: Return success message after added the income
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Income'
+        '400':
+          description: Request is not correct.
+        '404':
+          description: There is no endpoint found.
+        '500':
+          description: Internal Server error.
+
+  /incomes/{incomeId}:
+    get:
+      summary: Get specific income
+      operationId: getIncomeById
+      tags:
+        - Income API
+      parameters:
+        - name: incomeId
+          in: path
+          required: true
+          description: Income id to retrieve
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Return all incomes of the user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Income"
+        '400':
+          description: Request is not correct.
+        '404':
+          description: There is no endpoint found.
+        '500':
+          description: Internal Server error.
+
+    put:
+      summary: Update income
+      operationId: updateIncome
+      tags:
+        - Income API
+      parameters:
+        - name: incomeId
+          in: path
+          required: true
+          description: Income id to update
+          schema:
+            type: integer
+      requestBody:
+        description: Feilds to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Income'
+        required: true
+      responses:
+        '204':
+          description: updated
+          content: {}
+        '404':
+          description: There is no endpoint found
+        '500':
+          description: Internal Server error.
+
+    delete:
+      summary: delete income
+      operationId: deleteIncome
+      tags:
+        - Income API
+      parameters:
+        - name: incomeId
+          in: path
+          required: true
+          description: Income id to delete
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deleted
+          content: {}
+        '404':
+          description: There is no endpoint found
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    Expense:
+      required:
+        - id
+        - note
+        - category
+        - amount
+        - date
+        - method
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 20
+        note:
+          type: string
+          example: Expenses for repair the computer
+        category:
+          $ref: "#/components/schemas/Category"
+        amount:
+          type: number
+          format: double
+          example: 500.50
+        date:
+          type: string
+          format: date
+          description: spent date
+          example: "2021-01-30"
+        method:
+          $ref: "#/components/schemas/Method"
+
+    Income:
+      required:
+        - id
+        - note
+        - category
+        - amount
+        - date
+        - method
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 100
+        note:
+          type: string
+          example: Expenses for repair the computer
+        category:
+          $ref: "#/components/schemas/Category"
+        amount:
+          type: number
+          format: double
+          example: 500.50
+        date:
+          type: string
+          format: date
+          description: spent date
+          example: "2021-01-30"
+        method:
+          $ref: "#/components/schemas/Method"
+
+    Method:
+      required:
+        - id
+        - methodName
+        - description
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: unique ID
+          example: 234
+        methodName:
+          type: string
+          description: method of payment
+          example: debit card
+        description:
+          type: string
+          description: description of the method
+          example: Debit card Linked to bank account A
+
+    Category:
+      required:
+        - id
+        - categoryName
+        - description
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: unique category id
+          example: 64
+        categoryName:
+          type: string
+          description: category name
+          example: Beverage
+        description:
+          type: string
+          description: description of the category
+          example: expenses that for throwing party and other fun activities
+
+
